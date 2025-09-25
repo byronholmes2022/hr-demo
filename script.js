@@ -30,21 +30,37 @@ function createEmployeeRows() {
 
 createEmployeeRows();
 
-// DOM node for the form
+// DOM nodes for the form and error & success messages
 const addEmployeeForm = document.querySelector("#add-employee");
-
+const errorMessage = document.querySelector("#error-msg");
+const successMessage = document.querySelector("#success-msg");
 // our eventlistner that will create and add the new employee from the form inputs
 addEmployeeForm.addEventListener("submit", function (e) {
   e.preventDefault();
+  if (!errorMessage.classList.contains("hidden")) {
+    errorMessage.classList.add("hidden");
+  }
   const formData = new FormData(addEmployeeForm);
+  const name = formData.get("name");
+  const position = formData.get("position");
+  const salary = +formData.get("salary");
+  if (!name || !position || !salary) {
+    errorMessage.classList.remove("hidden");
+    return;
+  }
   const newEmployee = {
-    name: formData.get("name"),
-    position: formData.get("position"),
-    salary: +formData.get("salary"),
+    name,
+    position,
+    salary,
   };
   employeeList.push(newEmployee);
-  console.log(employeeList);
+
   createEmployeeRows();
+  successMessage.classList.remove("hidden");
+  addEmployeeForm.reset();
+  setTimeout(function () {
+    successMessage.classList.add("hidden");
+  }, 2000);
 });
 // global variable that can be updated to stop the loop below
 let userIsFinished = false;
