@@ -11,7 +11,7 @@ const employeeList = [
   { name: "Employee B", position: "Salesperson", salary: 60000 },
 ];
 
-// References to DOM nodes
+// References to DOM node for tbody
 const tableBody = document.querySelector("#employee-table tbody");
 
 function createEmployeeRows() {
@@ -30,6 +30,22 @@ function createEmployeeRows() {
 
 createEmployeeRows();
 
+// DOM node for the form
+const addEmployeeForm = document.querySelector("#add-employee");
+
+// our eventlistner that will create and add the new employee from the form inputs
+addEmployeeForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+  const formData = new FormData(addEmployeeForm);
+  const newEmployee = {
+    name: formData.get("name"),
+    position: formData.get("position"),
+    salary: +formData.get("salary"),
+  };
+  employeeList.push(newEmployee);
+  console.log(employeeList);
+  createEmployeeRows();
+});
 // global variable that can be updated to stop the loop below
 let userIsFinished = false;
 
